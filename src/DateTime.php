@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Bifrost\DataTypes;
+namespace Elavora\Api\DataTypes;
 
 use DateTimeImmutable;
 use DateTimeInterface;
