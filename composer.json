@@ -5,7 +5,7 @@
     "license":  "MIT",
     "require":  {
                     "php":  "\u003e=8.1",
-                    "elavora/api-datatype-core":  "^0.1"
+                    "elavora/api-datatype-core":  "^0.1 || ^0.2"
                 },
     "autoload":  {
                      "psr-4":  {
