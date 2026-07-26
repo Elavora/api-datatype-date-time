@@ -1,47 +1,33 @@
 # Guia de uso
 
-DataType de data e hora para aplicacoes Elavora API.
-
-## Instalacao
-
-```bash
-composer require elavora/api-datatype-date-time
-```
-
-## Quando usar
-
-- Validar e normalizar valores antes de chegar na regra de negocio.
-- Evitar passar strings soltas entre services, DTOs e persistencia.
-- Reutilizar a mesma validacao em controllers, comandos e testes.
-
-## Exemplo rapido
+`DateTime` converte entradas validas para UTC no formato `Y-m-d\TH:i:s.u\Z`.
 
 ```php
 use Elavora\Api\DataTypes\DateTime;
 
-$valor = new DateTime('exemplo');
-$normalizado = $valor->value();
+$dateTime = DateTime::from('2026-05-27T10:30:00-03:00');
+
+echo $dateTime->value(); // 2026-05-27T13:30:00.000000Z
 ```
 
-## Principais pontos de entrada
+O offset informado na entrada e respeitado. Strings sem offset sao interpretadas em UTC. Microssegundos sao preservados e datas impossiveis sao rejeitadas.
 
-- `Elavora\Api\DataTypes\DateTime`
+Tambem sao aceitos objetos que implementem `DateTimeInterface`, alem de expressoes relativas validas como `now`.
 
-## Dependencias de runtime
+```php
+$agora = DateTime::now();
+$agendamento = DateTime::from('tomorrow 10:00');
 
-- `elavora/api-datatype-core` `^0.1`
+$agendamento->assertFuture();
+```
 
-## Validacao no projeto consumidor
+`assertFuture()` compara os instantes em UTC, sem depender do timezone global do processo.
 
-Depois de instalar o pacote, rode os testes da aplicacao consumidora. Para uma verificacao isolada do pacote, use container:
+## Validacao do pacote
+
+Execute os comandos a partir da raiz do clone:
 
 ```bash
-docker run --rm -v "${PWD}:/workspace" -w "/workspace/api-datatype-date-time" composer:2 composer validate --strict --no-check-publish
-docker run --rm -v "${PWD}:/workspace" -w "/workspace/api-datatype-date-time" composer:2 sh -lc "find . \\( -path ./.git -o -path ./vendor \\) -prune -o -name '*.php' -print0 | xargs -0 -r -n1 php -l"
+docker run --rm -v "${PWD}:/workspace" -w /workspace composer:2 composer update --no-interaction --no-progress --prefer-dist
+docker run --rm -v "${PWD}:/workspace" -w /workspace composer:2 composer check
 ```
-
-## Observacoes
-
-- Mantenha regras de produto fora deste pacote.
-- Prefira configurar extensoes no bootstrap da aplicacao.
-- Instale apenas os modulos que a aplicacao realmente usa.
