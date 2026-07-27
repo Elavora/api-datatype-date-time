@@ -6,6 +6,7 @@ namespace Elavora\Api\DataTypes;
 
 use DateTimeImmutable;
 use DateTimeInterface;
+use DateTimeZone;
 use Exception;
 use InvalidArgumentException;
 
@@ -24,21 +25,7 @@ final readonly class DateTime extends AbstractDataType
      */
     public static function isValid(mixed $value): bool
     {
-        if ($value instanceof DateTimeInterface) {
-            return true;
-        }
-
-        if (!is_string($value) || trim($value) === '') {
-            return false;
-        }
-
-        try {
-            new DateTimeImmutable($value);
-        } catch (Exception) {
-            return false;
-        }
-
-        return true;
+        return self::parse($value) !== null;
     }
 
     /**
@@ -46,17 +33,55 @@ final readonly class DateTime extends AbstractDataType
      */
     public function assertFuture(): void
     {
-        if (new DateTimeImmutable((string) $this->value()) <= new DateTimeImmutable()) {
+        $instant = self::parse($this->value());
+        $now = new DateTimeImmutable('now', self::utc());
+
+        if ($instant === null || $instant <= $now) {
             throw new InvalidArgumentException('Data e hora devem estar no futuro.');
         }
     }
 
     protected static function normalize(mixed $value): string
     {
-        if ($value instanceof DateTimeInterface) {
-            return $value->format('Y-m-d H:i:s');
+        $dateTime = self::parse($value);
+        if ($dateTime === null) {
+            throw new InvalidArgumentException('Data e hora invalidas.');
         }
 
-        return (new DateTimeImmutable((string) $value))->format('Y-m-d H:i:s');
+        return $dateTime
+            ->setTimezone(self::utc())
+            ->format('Y-m-d\TH:i:s.u\Z');
+    }
+
+    private static function parse(mixed $value): ?DateTimeImmutable
+    {
+        if ($value instanceof DateTimeInterface) {
+            return DateTimeImmutable::createFromInterface($value);
+        }
+
+        if (!is_string($value) || trim($value) === '') {
+            return null;
+        }
+
+        try {
+            $dateTime = new DateTimeImmutable(trim($value), self::utc());
+        } catch (Exception) {
+            return null;
+        }
+
+        $errors = DateTimeImmutable::getLastErrors();
+        if (
+            $errors !== false
+            && ($errors['warning_count'] > 0 || $errors['error_count'] > 0)
+        ) {
+            return null;
+        }
+
+        return $dateTime;
+    }
+
+    private static function utc(): DateTimeZone
+    {
+        return new DateTimeZone('UTC');
     }
 }

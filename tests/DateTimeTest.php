@@ -11,7 +11,10 @@ final class DateTimeTest extends TestCase
 {
     public function testValidatesDateTime(): void
     {
-        self::assertSame('2026-05-27 10:30:00', DateTime::from('2026-05-27 10:30:00')->value());
+        self::assertSame(
+            '2026-05-27T10:30:00.000000Z',
+            DateTime::from('2026-05-27 10:30:00')->value()
+        );
         self::assertFalse(DateTime::isValid('not a date'));
     }
 }
