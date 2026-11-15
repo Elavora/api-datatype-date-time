@@ -20,7 +20,7 @@ final class DateTimeTest extends TestCase
 
     public function testValidatesDateTime(): void
     {
-        self::assertSame('2026-05-27 10:30:00', new DateTime('2026-05-27 10:30:00')->value());
+        self::assertSame('2026-05-27 10:30:00', (new DateTime('2026-05-27 10:30:00'))->value());
         self::assertFalse(DateTime::isValid('not a date'));
     }
 
@@ -162,7 +162,7 @@ final class DateTimeTest extends TestCase
 
     public function testAssertFutureAcceptsFarFutureDate(): void
     {
-        new DateTime('2999-01-01 00:00:00')->assertFuture();
+        (new DateTime('2999-01-01 00:00:00'))->assertFuture();
 
         $this->addToAssertionCount(1);
     }
@@ -172,7 +172,7 @@ final class DateTimeTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(self::FUTURE_MESSAGE);
 
-        new DateTime('2000-01-01 00:00:00')->assertFuture();
+        (new DateTime('2000-01-01 00:00:00'))->assertFuture();
     }
 
     public function testAssertFutureRejectsPresent(): void
@@ -186,7 +186,7 @@ final class DateTimeTest extends TestCase
     public function testAssertFutureMessageIsExact(): void
     {
         try {
-            new DateTime('2000-01-01 00:00:00')->assertFuture();
+            (new DateTime('2000-01-01 00:00:00'))->assertFuture();
             self::fail('Deveria lancar InvalidArgumentException.');
         } catch (\InvalidArgumentException $e) {
             self::assertSame('Data e hora devem estar no futuro.', $e->getMessage());
