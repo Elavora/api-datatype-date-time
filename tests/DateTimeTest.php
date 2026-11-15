@@ -204,12 +204,12 @@ final class DateTimeTest extends TestCase
         self::assertInstanceOf(\Stringable::class, new DateTime('2026-05-27'));
     }
 
-    public function testConstructorIsNotPublic(): void
+    public function testConstructorIsPublic(): void
     {
         $constructor = (new \ReflectionClass(DateTime::class))->getConstructor();
 
         self::assertNotNull($constructor);
-        self::assertFalse($constructor->isPublic());
+        self::assertTrue($constructor->isPublic());
     }
 
     public function testSourceDoesNotUseNewDateTime(): void
