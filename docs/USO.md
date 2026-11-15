@@ -19,7 +19,7 @@ composer require elavora/api-datatype-date-time
 ```php
 use Elavora\Api\DataTypes\DateTime;
 
-$data = DateTime::from('2026-05-27T10:30:00');
+$data = new DateTime('2026-05-27T10:30:00');
 
 $data->value();                                  // '2026-05-27 10:30:00'
 (string) $data;                                  // '2026-05-27 10:30:00'
@@ -27,7 +27,7 @@ json_encode($data);                              // '"2026-05-27 10:30:00"'
 DateTime::isValid('2026-05-27 10:30:00');        // true
 ```
 
-O construtor não é público: crie sempre por `DateTime::from()` (ou `DateTime::now()`).
+O construtor não é público: crie sempre por `new DateTime()` (ou `DateTime::now()`).
 
 ## Versão e compatibilidade
 
@@ -44,7 +44,7 @@ ou superior.
 
 **Quebra de compatibilidade:** no `elavora/api-datatype-core` 2 o construtor de `AbstractDataType` é
 `final protected`, então `new DateTime('2026-05-27 10:30:00')` deixa de funcionar fora da própria classe. Troque por
-`DateTime::from('2026-05-27 10:30:00')`. `DateTime::isValid()`, `DateTime::now()`, `assertFuture()` e `value()`
+`new DateTime('2026-05-27 10:30:00')`. `DateTime::isValid()`, `DateTime::now()`, `assertFuture()` e `value()`
 continuam iguais.
 
 ### `composer.json`
@@ -63,7 +63,7 @@ O `composer.json` do pacote deve ter:
 
 ## Criação e entrada inválida
 
-`Elavora\Api\DataTypes\DateTime::from(mixed $value): static` valida o valor com `isValid()` e devolve um `DateTime`
+`Elavora\Api\DataTypes\new DateTime(mixed $value): static` valida o valor com `isValid()` e devolve um `DateTime`
 com o valor normalizado (texto no formato `Y-m-d H:i:s`). Se o valor for inválido, lança `\InvalidArgumentException`
 com a mensagem `Valor invalido para Elavora\Api\DataTypes\DateTime.`
 
@@ -71,7 +71,7 @@ com a mensagem `Valor invalido para Elavora\Api\DataTypes\DateTime.`
 use Elavora\Api\DataTypes\DateTime;
 
 try {
-    DateTime::from('not a date');
+    new DateTime('not a date');
 } catch (\InvalidArgumentException $e) {
     echo $e->getMessage(); // Valor invalido para Elavora\Api\DataTypes\DateTime.
 }
@@ -79,7 +79,7 @@ try {
 
 Métodos da classe e da instância:
 
-- `DateTime::now(): self`: cria um `DateTime` com o instante atual (equivale a `DateTime::from('now')`).
+- `DateTime::now(): self`: cria um `DateTime` com o instante atual (equivale a `new DateTime('now')`).
 - `DateTime::isValid(mixed $value): bool`: veja a próxima seção. Não lança exceção.
 - `assertFuture(): void`: não retorna nada quando a data e hora estão no futuro. Quando estão no presente ou no passado,
   lança `\InvalidArgumentException` com a mensagem `Data e hora devem estar no futuro.`
@@ -88,9 +88,9 @@ Métodos da classe e da instância:
 ```php
 use Elavora\Api\DataTypes\DateTime;
 
-DateTime::from('2999-01-01 00:00:00')->assertFuture(); // sem exceção
+new DateTime('2999-01-01 00:00:00')->assertFuture(); // sem exceção
 
-DateTime::from('2000-01-01 00:00:00')->assertFuture(); // InvalidArgumentException: Data e hora devem estar no futuro.
+new DateTime('2000-01-01 00:00:00')->assertFuture(); // InvalidArgumentException: Data e hora devem estar no futuro.
 ```
 
 ## Validação e normalização
@@ -142,7 +142,7 @@ Contraexemplo (comportamento que não vale mais): `new DateTime('2026-05-27 10:3
 
 ## Dependências de runtime
 
-- `elavora/api-datatype-core` `^2.0`
+- `elavora/api-datatype-core` `^3.0`
 
 ## Validação do pacote
 

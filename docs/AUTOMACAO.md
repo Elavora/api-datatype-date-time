@@ -450,7 +450,7 @@ dependências de `require`, `autoload`, `extra.branch-alias`) continuam como est
 - Este PR também é o upgrade do pacote: `php` sobe de `>=8.1` para `>=8.3`, e `elavora/api-datatype-core` sobe de
   `^0.1` para `^2.0`, que traz o `elavora/api-framework` `^2.0`. O ambiente de desenvolvimento e o CI já usam PHP 8.3
   (a imagem). O `src/` só muda se o core 2.0 exigir: `DateTime` herda de `AbstractDataType`; no core 2 o construtor deixa de ser público, e a criação passa a ser
-  `DateTime::from()` (veja [Guia de uso](USO.md#versão-e-compatibilidade)). Em `extra.branch-alias`, `dev-main` passa de `0.1-dev` para `1.0-dev`.
+  `new DateTime()` (veja [Guia de uso](USO.md#versão-e-compatibilidade)). Em `extra.branch-alias`, `dev-main` passa de `0.1-dev` para `1.0-dev`.
 
 - `elavora/code-standards` fica em `require-dev`, nunca em `require`. A restrição é `^1.` seguido do minor (1 ou
   maior) e, opcionalmente, do patch. O minor mínimo é 1 porque o subcomando `lint` só existe a partir da 1.1.0, e o CI
