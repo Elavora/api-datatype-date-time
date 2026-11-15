@@ -20,7 +20,7 @@ final class DateTimeTest extends TestCase
 
     public function testValidatesDateTime(): void
     {
-        self::assertSame('2026-05-27 10:30:00', DateTime::from('2026-05-27 10:30:00')->value());
+        self::assertSame('2026-05-27 10:30:00', (new DateTime('2026-05-27 10:30:00'))->value());
         self::assertFalse(DateTime::isValid('not a date'));
     }
 
@@ -62,7 +62,7 @@ final class DateTimeTest extends TestCase
     #[DataProvider('validProvider')]
     public function testFromNormalizesToYmdHis(mixed $input, string $expected): void
     {
-        $date = DateTime::from($input);
+        $date = new DateTime($input);
 
         self::assertSame($expected, $date->value());
         self::assertSame($expected, (string) $date);
@@ -72,7 +72,7 @@ final class DateTimeTest extends TestCase
 
     public function testValueIsAlwaysStringNotObject(): void
     {
-        $date = DateTime::from(new \DateTimeImmutable('2026-05-27 10:30:00'));
+        $date = new DateTime(new \DateTimeImmutable('2026-05-27 10:30:00'));
 
         self::assertIsString($date->value());
         self::assertSame(
@@ -86,7 +86,7 @@ final class DateTimeTest extends TestCase
         self::assertTrue(DateTime::isValid('now'));
 
         $before = time();
-        $fromNow = DateTime::from('now');
+        $fromNow = new DateTime('now');
         $after = time();
 
         self::assertMatchesRegularExpression('/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/', (string) $fromNow->value());
@@ -147,13 +147,13 @@ final class DateTimeTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(self::INVALID_MESSAGE);
 
-        DateTime::from($input);
+        new DateTime($input);
     }
 
     public function testFromInvalidMessageIsExact(): void
     {
         try {
-            DateTime::from('not a date');
+            new DateTime('not a date');
             self::fail('Deveria lancar InvalidArgumentException.');
         } catch (\InvalidArgumentException $e) {
             self::assertSame('Valor invalido para Elavora\Api\DataTypes\DateTime.', $e->getMessage());
@@ -162,7 +162,7 @@ final class DateTimeTest extends TestCase
 
     public function testAssertFutureAcceptsFarFutureDate(): void
     {
-        DateTime::from('2999-01-01 00:00:00')->assertFuture();
+        (new DateTime('2999-01-01 00:00:00'))->assertFuture();
 
         $this->addToAssertionCount(1);
     }
@@ -172,7 +172,7 @@ final class DateTimeTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(self::FUTURE_MESSAGE);
 
-        DateTime::from('2000-01-01 00:00:00')->assertFuture();
+        (new DateTime('2000-01-01 00:00:00'))->assertFuture();
     }
 
     public function testAssertFutureRejectsPresent(): void
@@ -186,7 +186,7 @@ final class DateTimeTest extends TestCase
     public function testAssertFutureMessageIsExact(): void
     {
         try {
-            DateTime::from('2000-01-01 00:00:00')->assertFuture();
+            (new DateTime('2000-01-01 00:00:00'))->assertFuture();
             self::fail('Deveria lancar InvalidArgumentException.');
         } catch (\InvalidArgumentException $e) {
             self::assertSame('Data e hora devem estar no futuro.', $e->getMessage());
@@ -200,16 +200,16 @@ final class DateTimeTest extends TestCase
         self::assertTrue($class->isFinal());
         self::assertTrue($class->isReadOnly());
         self::assertTrue($class->isSubclassOf(AbstractDataType::class));
-        self::assertInstanceOf(\JsonSerializable::class, DateTime::from('2026-05-27'));
-        self::assertInstanceOf(\Stringable::class, DateTime::from('2026-05-27'));
+        self::assertInstanceOf(\JsonSerializable::class, new DateTime('2026-05-27'));
+        self::assertInstanceOf(\Stringable::class, new DateTime('2026-05-27'));
     }
 
-    public function testConstructorIsNotPublic(): void
+    public function testConstructorIsPublic(): void
     {
         $constructor = (new \ReflectionClass(DateTime::class))->getConstructor();
 
         self::assertNotNull($constructor);
-        self::assertFalse($constructor->isPublic());
+        self::assertTrue($constructor->isPublic());
     }
 
     public function testSourceDoesNotUseNewDateTime(): void

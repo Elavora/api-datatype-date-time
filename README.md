@@ -13,11 +13,11 @@ use Elavora\Api\DataTypes\DateTime;
 
 DateTime::isValid('2026-05-27 10:30:00'); // true
 
-$data = DateTime::from('2026-05-27T10:30:00');
+$data = new DateTime('2026-05-27T10:30:00');
 $data->value(); // '2026-05-27 10:30:00'
 ```
 
-Entrada inválida em `DateTime::from()` lança `InvalidArgumentException`.
+Entrada inválida em `new DateTime()` lança `InvalidArgumentException`.
 
 Especificação completa, exemplos e validação local: [docs/USO.md](docs/USO.md).
 
@@ -30,11 +30,11 @@ composer require elavora/api-datatype-date-time
 Requisitos:
 
 - PHP 8.3 ou superior.
-- `elavora/api-datatype-core` `^2.0` (que traz o `elavora/api-framework` `^2.0`).
+- `elavora/api-datatype-core` `^3.0` (que traz o `elavora/api-framework` `^3.0`).
 
 Versão `1.0`: atualiza o pacote para o `elavora/api-datatype-core` 2.0, que substitui o `^0.1`, e passa a exigir
 PHP 8.3 ou superior. **Quebra:** o construtor deixa de ser público (no core 2 ele é `final protected`),
-então `new DateTime(...)` não funciona mais; use `DateTime::from(...)`. `isValid()` e `value()` não mudam.
+então `new DateTime(...)` não funciona mais; use `new DateTime(...)`. `isValid()` e `value()` não mudam.
 
 ## Desenvolvimento e testes
 

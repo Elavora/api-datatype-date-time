@@ -16,7 +16,7 @@ final readonly class DateTime extends AbstractDataType
      */
     public static function now(): self
     {
-        return self::from('now');
+        return new self('now');
     }
 
     /**
