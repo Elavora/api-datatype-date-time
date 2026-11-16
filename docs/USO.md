@@ -35,7 +35,7 @@ O construtor não é público: crie sempre por `new DateTime()` (ou `DateTime::n
 |---|---|
 | Última versão antes do upgrade | `0.2.0` (tag legada `v0.2.0`) |
 | Versão do upgrade | `1.0.0` |
-| PHP | `>=8.3` |
+| PHP | `>=8.4` |
 | `elavora/api-datatype-core` | `^2.0` |
 
 As versões seguintes saem do fluxo central de release: veja [Versões e release](AUTOMACAO.md#versões-e-release).
@@ -51,7 +51,7 @@ continuam iguais.
 
 O `composer.json` do pacote deve ter:
 
-- `require.php` = `">=8.3"` e `require.elavora/api-datatype-core` = `"^2.0"`
+- `require.php` = `">=8.4"` e `require.elavora/api-datatype-core` = `"^2.0"`
 - `extra.branch-alias.dev-main` = `"1.0-dev"`
 - `autoload.psr-4` = `"Elavora\\Api\\DataTypes\\": "src/"` (sem mudança)
 - `require-dev.phpunit/phpunit` = `"^10.5 || ^11.0 || ^12.0"` (sem mudança)
@@ -142,7 +142,7 @@ Contraexemplo (comportamento que não vale mais): `new DateTime('2026-05-27 10:3
 
 ## Dependências de runtime
 
-- `elavora/api-datatype-core` `^3.0`
+- `elavora/api-datatype-core` `^4.0`
 
 ## Validação do pacote
 

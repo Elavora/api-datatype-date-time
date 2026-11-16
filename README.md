@@ -29,8 +29,8 @@ composer require elavora/api-datatype-date-time
 
 Requisitos:
 
-- PHP 8.3 ou superior.
-- `elavora/api-datatype-core` `^3.0` (que traz o `elavora/api-framework` `^3.0`).
+- PHP 8.4 ou superior.
+- `elavora/api-datatype-core` `^4.0` (que traz o `elavora/api-framework` `^4.0`).
 
 Versão `1.0`: atualiza o pacote para o `elavora/api-datatype-core` 2.0, que substitui o `^0.1`, e passa a exigir
 PHP 8.3 ou superior. **Quebra:** o construtor deixa de ser público (no core 2 ele é `final protected`),
@@ -38,11 +38,11 @@ então `new DateTime(...)` não funciona mais; use `new DateTime(...)`. `isValid
 
 ## Desenvolvimento e testes
 
-Você só precisa de Docker. O ambiente é a imagem `ghcr.io/elavora/php-dev:8.3-latest`: abra o repositório no VS Code
+Você só precisa de Docker. O ambiente é a imagem `ghcr.io/elavora/php-dev:8.4-latest`: abra o repositório no VS Code
 com **Dev Containers: Reopen in Container**, ou rode no PowerShell:
 
 ```powershell
-docker run --rm --mount "type=bind,source=$($PWD.Path),target=/workspace" -w /workspace ghcr.io/elavora/php-dev:8.3-latest sh -lc 'git config --global --add safe.directory /workspace && composer install --no-interaction --prefer-dist && composer check'
+docker run --rm --mount "type=bind,source=$($PWD.Path),target=/workspace" -w /workspace ghcr.io/elavora/php-dev:8.4-latest sh -lc 'git config --global --add safe.directory /workspace && composer install --no-interaction --prefer-dist && composer check'
 ```
 
 Scripts do Composer:
