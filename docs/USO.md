@@ -140,6 +140,20 @@ Contraexemplo (comportamento que não vale mais): `new DateTime('2026-05-27 10:3
 
 - `Elavora\Api\DataTypes\DateTime` (`final readonly`, herda de `Elavora\Api\DataTypes\AbstractDataType`)
 
+## Documentação do tipo (OPTIONS)
+
+`DateTime` implementa `Elavora\Api\Framework\Contracts\DescribesType`. O `OPTIONS` público da API usa
+`DateTime::documentedType()` para documentar o campo sem expor o nome da classe PHP. Declara:
+
+- `type`: `string`
+- `format`: `date-time`
+- `mask`: `0000-00-00 00:00:00` (forma normalizada, a mesma devolvida por `value()`)
+- `example`: `2026-05-27 10:30:00`
+- `description`: data e hora; `value()` devolve sempre no formato `Y-m-d H:i:s`
+
+A entrada aceita outros formatos que o PHP interpreta (veja a seção anterior); a máscara descreve a forma
+normalizada. A validação continua sendo feita por `isValid()`.
+
 ## Dependências de runtime
 
 - `elavora/api-datatype-core` `^4.0`

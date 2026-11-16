@@ -6,11 +6,28 @@ namespace Elavora\Api\DataTypes;
 
 use DateTimeImmutable;
 use DateTimeInterface;
+use Elavora\Api\Framework\Contracts\DescribesType;
 use Exception;
 use InvalidArgumentException;
 
-final readonly class DateTime extends AbstractDataType
+final readonly class DateTime extends AbstractDataType implements DescribesType
 {
+    /**
+     * Descreve o tipo para a documentacao publica (OPTIONS).
+     *
+     * @return array<string, mixed>
+     */
+    public static function documentedType(): array
+    {
+        return [
+            'type' => 'string',
+            'format' => 'date-time',
+            'mask' => '0000-00-00 00:00:00',
+            'example' => '2026-05-27 10:30:00',
+            'description' => 'Data e hora; value() devolve sempre no formato Y-m-d H:i:s.',
+        ];
+    }
+
     /**
      * Cria um DateTime com o instante atual.
      */
